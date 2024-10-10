@@ -1,11 +1,14 @@
-import './App.css';
-import { Cover } from './Pages/Cover';
+import Page from './Pages/Page';
+import AppStateProvider from './state/AppStateContext';
+import { createPage } from './utils/createPage';
+
+const initialState = createPage();
 
 function App() {
   return (
-    <>
-      <Cover />
-    </>
+    <AppStateProvider initialState={initialState}>
+      <Page />;
+    </AppStateProvider>
   );
 }
 

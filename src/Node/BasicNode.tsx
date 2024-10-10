@@ -4,8 +4,11 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { NodeData } from '../utils/types';
+import { NodeData, NodeType } from '../utils/types';
 import { nanoid } from 'nanoid';
+import cx from 'classnames';
+import { useAppState } from '../state/AppStateContext';
+import CommandPanel from './CommandPanel';
 
 import styles from './Node.module.css';
 
@@ -14,9 +17,6 @@ type BasicNodeProps = {
   updateFocusedIndex(index: number): void;
   isFocused: boolean;
   index: number;
-  addNode(node: NodeData, index: number): void;
-  removeNodeByIndex(index: number): void;
-  changeNodeValue(index: number, value: string): void;
 };
 
 const BasicNode = ({
@@ -24,11 +24,12 @@ const BasicNode = ({
   updateFocusedIndex,
   isFocused,
   index,
-  addNode,
-  removeNodeByIndex,
-  changeNodeValue,
 }: BasicNodeProps) => {
   const nodeRef = useRef<HTMLDivElement>(null);
+  const showCommandPanel = isFocused && node?.value?.match(/^\//);
+
+  const { changeNodeValue, changeNodeType, removeNodeByIndex, addNode } =
+    useAppState();
 
   useEffect(() => {
     if (isFocused) {
@@ -43,6 +44,13 @@ const BasicNode = ({
       nodeRef.current.textContent = node.value;
     }
   }, [node]);
+
+  const parseCommand = (nodeType: NodeType) => {
+    if (nodeRef.current) {
+      changeNodeType(index, nodeType);
+      nodeRef.current.textContent = '';
+    }
+  };
 
   const handleInput: FormEventHandler<HTMLDivElement> = ({ currentTarget }) => {
     const { textContent } = currentTarget;
@@ -77,15 +85,20 @@ const BasicNode = ({
   };
 
   return (
-    <div
-      className={styles.node}
-      ref={nodeRef}
-      onInput={handleInput}
-      onClick={handleClick}
-      onKeyDown={onKeyDown}
-      contentEditable
-      suppressContentEditableWarning
-    />
+    <>
+      {showCommandPanel && (
+        <CommandPanel selectItem={parseCommand} nodeText={node.value} />
+      )}
+      <div
+        className={cx(styles.node, styles[node.type])}
+        ref={nodeRef}
+        onInput={handleInput}
+        onClick={handleClick}
+        onKeyDown={onKeyDown}
+        contentEditable
+        suppressContentEditableWarning
+      />
+    </>
   );
 };
 
