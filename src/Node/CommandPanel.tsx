@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NodeType } from '../utils/types';
 import { useOverflowsScreenBottom } from './useOverflowsScreenBottom';
 import styles from './CommandPanel.module.css';
@@ -14,9 +14,11 @@ type SupportedNodeType = {
   name: string;
 };
 
-const SupportedNodeTypes: SupportedNodeType[] = [
+const supportedNodeTypes: SupportedNodeType[] = [
   { value: 'text', name: 'Text' },
   { value: 'list', name: 'List' },
+  { value: 'pages', name: 'Page' },
+  { value: 'images', name: 'Image' },
   { value: 'heading1', name: 'Heading 1' },
   { value: 'heading2', name: 'Heading 2' },
   { value: 'heading3', name: 'Heading 3' },
@@ -29,11 +31,12 @@ const CommandPanel = ({ selectItem, nodeText }: CommandPanelProps) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
-        selectItem(SupportedNodeTypes[selectedItemIndex].value);
+        selectItem(supportedNodeTypes[selectedItemIndex].value);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -42,7 +45,7 @@ const CommandPanel = ({ selectItem, nodeText }: CommandPanelProps) => {
   useEffect(() => {
     const normalizedValue = nodeText.toLowerCase().replace(/\//, '');
     setSelectedItemIndex(
-      SupportedNodeTypes.findIndex((item) => item.value.match(normalizedValue))
+      supportedNodeTypes.findIndex((item) => item.value.match(normalizedValue))
     );
   }, [nodeText]);
 
@@ -55,7 +58,7 @@ const CommandPanel = ({ selectItem, nodeText }: CommandPanelProps) => {
     >
       <div className={styles.title}>Blocks</div>
       <ul>
-        {SupportedNodeTypes.map((type, index) => {
+        {supportedNodeTypes.map((type, index) => {
           const selected = selectedItemIndex === index;
 
           return (
