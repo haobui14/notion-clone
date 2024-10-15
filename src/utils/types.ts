@@ -2,7 +2,7 @@ export type NodeType =
   | 'text'
   | 'images'
   | 'list'
-  | 'pages'
+  | 'page'
   | 'heading1'
   | 'heading2'
   | 'heading3';

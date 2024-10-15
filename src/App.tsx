@@ -2,10 +2,7 @@ import Auth from './auth/Auth';
 import Private from './auth/Private';
 import Page from './Pages/Page';
 import AppStateProvider from './state/AppStateContext';
-import { createPage } from './utils/createPage';
 import { Route, Routes } from 'react-router-dom';
-
-const initialState = createPage();
 
 function App() {
   return (
@@ -16,7 +13,7 @@ function App() {
         element={
           <Private
             component={
-              <AppStateProvider initialState={initialState}>
+              <AppStateProvider>
                 <Page />;
               </AppStateProvider>
             }
@@ -28,7 +25,7 @@ function App() {
         element={
           <Private
             component={
-              <AppStateProvider initialState={initialState}>
+              <AppStateProvider>
                 <Page />;
               </AppStateProvider>
             }
