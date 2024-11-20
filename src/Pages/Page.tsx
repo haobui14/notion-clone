@@ -13,7 +13,15 @@ import {
 import NodeContainer from '../Node/NodeContainer';
 
 const Page = () => {
-  const { title, nodes, addNode, reorderNodes, setTitle } = useAppState();
+  const {
+    title,
+    nodes,
+    addNode,
+    cover,
+    setCoverImage,
+    reorderNodes,
+    setTitle,
+  } = useAppState();
 
   const [focusedNodeIndex, setFocusedNodeIndex] = useFocusedNodeIndex({
     nodes,
@@ -28,7 +36,7 @@ const Page = () => {
 
   return (
     <>
-      <Cover />
+      <Cover filePath={cover} changePageCover={setCoverImage} />
       <div>
         <Title addNode={addNode} title={title} changePageTitle={setTitle} />
         <DndContext onDragEnd={handleDragEvent}>

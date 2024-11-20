@@ -14,7 +14,7 @@ type PageNodeProps = {
 
 const PageNode = ({ node, isFocused, index }: PageNodeProps) => {
   const navigate = useNavigate();
-  const [pageTitle, setPageTitle] = useState('sasd');
+  const [pageTitle, setPageTitle] = useState('');
   const { removeNodeByIndex } = useAppState();
 
   useEffect(() => {
