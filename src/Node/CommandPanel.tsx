@@ -30,11 +30,19 @@ const CommandPanel = ({ selectItem, nodeText }: CommandPanelProps) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'ArrowUp') {
+        setSelectedItemIndex((prevIndex) =>
+          prevIndex > 0 ? prevIndex - 1 : supportedNodeTypes.length - 1
+        );
+      } else if (event.key === 'ArrowDown') {
+        setSelectedItemIndex((prevIndex) =>
+          prevIndex < supportedNodeTypes.length - 1 ? prevIndex + 1 : 0
+        );
+      } else if (event.key === 'Enter') {
         selectItem(supportedNodeTypes[selectedItemIndex].value);
       }
     };
-
+    
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
